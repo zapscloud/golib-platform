@@ -88,7 +88,7 @@ func (t *AppUserMongoDBDao) List(filter string, sort string, skip int64, limit i
 	for idx, value := range results {
 		log.Println("Item ", idx)
 		// Delete Password
-		delete(value, platform_common.FLD_SYS_USER_PASSWORD)
+		delete(value, platform_common.FLD_APP_USER_PASSWORD)
 
 		value = db_common.AmendFldsForGet(value)
 		listdata = append(listdata, value)
@@ -129,6 +129,7 @@ func (t *AppUserMongoDBDao) GetDetails(userid string) (utils.Map, error) {
 	log.Println("Find:: Got Collection ")
 
 	filter := bson.D{{Key: platform_common.FLD_APP_USER_ID, Value: userid}, {}}
+	filter = append(filter, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Find:: Got filter ", filter)
 
@@ -143,7 +144,7 @@ func (t *AppUserMongoDBDao) GetDetails(userid string) (utils.Map, error) {
 		return result, err
 	}
 	// Delete Password
-	delete(result, platform_common.FLD_SYS_USER_PASSWORD)
+	delete(result, platform_common.FLD_APP_USER_PASSWORD)
 
 	// Remove fields from result
 	result = db_common.AmendFldsForGet(result)
@@ -188,9 +189,9 @@ func (t *AppUserMongoDBDao) Authenticate(auth_key string, auth_login string, aut
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
 	log.Println("Find:: Got Collection ")
 
-	// filter := bson.D{{Key: platform_common.FLD_SYS_USER_EMAIL, Value: email}, {Key: platform_common.FLD_SYS_USER_PASSWORD, Value: password}}
+	// filter := bson.D{{Key: platform_common.FLD_APP_USER_EMAIL, Value: email}, {Key: platform_common.FLD_APP_USER_PASSWORD, Value: password}}
 
-	filter := bson.M{auth_key: auth_login, platform_common.FLD_SYS_USER_PASSWORD: auth_pwd}
+	filter := bson.M{auth_key: auth_login, platform_common.FLD_APP_USER_PASSWORD: auth_pwd}
 
 	log.Println("Find:: Got filter ", filter)
 
@@ -207,7 +208,7 @@ func (t *AppUserMongoDBDao) Authenticate(auth_key string, auth_login string, aut
 	}
 
 	// Delete Password
-	delete(result, platform_common.FLD_SYS_USER_PASSWORD)
+	delete(result, platform_common.FLD_APP_USER_PASSWORD)
 
 	// Remove fields from result
 	result = db_common.AmendFldsForGet(result)
@@ -250,12 +251,13 @@ func (t *AppUserMongoDBDao) Find(filter string) (utils.Map, error) {
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
 	log.Println("Find:: Got Collection ", err)
 
-	var bfilter interface{}
+	bfilter := bson.D{}
 	err = bson.UnmarshalExtJSON([]byte(filter), true, &bfilter)
 	if err != nil {
 		fmt.Println("Error on filter Unmarshal", err)
 	}
 
+	bfilter = append(bfilter, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	log.Println("Find:: Got filter ", bfilter)
 	singleResult := collection.FindOne(ctx, bfilter)
 	if singleResult.Err() != nil {
@@ -269,7 +271,7 @@ func (t *AppUserMongoDBDao) Find(filter string) (utils.Map, error) {
 	}
 
 	// Delete Password
-	delete(result, platform_common.FLD_SYS_USER_PASSWORD)
+	delete(result, platform_common.FLD_APP_USER_PASSWORD)
 
 	// Remove fields from result
 	result = db_common.AmendFldsForGet(result)

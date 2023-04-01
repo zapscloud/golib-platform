@@ -138,7 +138,8 @@ func (p *BusinessMongoDBDao) GetDetails(business_id string) (utils.Map, error) {
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformBusinesses)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_BUSINESS_ID, Value: business_id},
+	filter := bson.D{
+		{Key: platform_common.FLD_BUSINESS_ID, Value: business_id},
 		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("Find:: Got filter ", filter)

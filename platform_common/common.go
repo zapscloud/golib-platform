@@ -88,7 +88,7 @@ const (
 	// App Business table fields
 	FLD_BUSINESS_ID            = "business_id"
 	FLD_BUSINESS_NAME          = "business_name"
-	FLD_BUSINESS_EMAILID       = "email_id"
+	FLD_BUSINESS_EMAILID       = "business_email_id"
 	FLD_BUSINESS_REGION_ID     = "region_id"
 	FLD_BUSINESS_IS_TENANT_DB  = "tenant_db"
 	FLD_BUSINESS_APPROVAL_CODE = "approval_code"

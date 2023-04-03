@@ -184,14 +184,14 @@ func (t *AppUserMongoDBDao) Authenticate(auth_key string, auth_login string, aut
 	// Find a single document
 	var result utils.Map
 
-	log.Println("AppUserMongoDBDao::Find:: Begin ", auth_login)
+	log.Println("AppUserMongoDBDao::Authenticate:: Begin ", auth_key, auth_login)
 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
 	log.Println("Find:: Got Collection ")
 
 	// filter := bson.D{{Key: platform_common.FLD_APP_USER_EMAIL, Value: email}, {Key: platform_common.FLD_APP_USER_PASSWORD, Value: password}}
 
-	filter := bson.M{auth_key: auth_login, platform_common.FLD_APP_USER_PASSWORD: auth_pwd}
+	filter := bson.M{auth_key: auth_login, platform_common.FLD_APP_USER_PASSWORD: auth_pwd, db_common.FLD_IS_DELETED: false}
 
 	log.Println("Find:: Got filter ", filter)
 
@@ -213,7 +213,7 @@ func (t *AppUserMongoDBDao) Authenticate(auth_key string, auth_login string, aut
 	// Remove fields from result
 	result = db_common.AmendFldsForGet(result)
 
-	log.Printf("AppUserMongoDBDao::Find:: End Found a single document: %+v\n", result)
+	log.Printf("AppUserMongoDBDao::Authenticate:: End Found a single document: %+v\n", result)
 	return result, nil
 }
 

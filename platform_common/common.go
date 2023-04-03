@@ -2,6 +2,8 @@ package platform_common
 
 import (
 	"log"
+
+	"github.com/zapscloud/golib-dbutils/db_common"
 )
 
 // ************************************
@@ -12,30 +14,31 @@ import (
 
 // Sys module tables ========================================
 const (
+	DbPrefix = db_common.DB_COLLECTION_PREFIX
 	// Platform Tables
-	DbPlatformSettings = "platform_settings"
+	DbPlatformSettings = DbPrefix + "platform_settings"
 
-	DbPlatformSysClients    = "platform_sysclients"
-	DbPlatformSysUsers      = "platform_sysusers"
-	DbPlatformSysRoles      = "platform_sysroles"
-	DbPlatformSysRoleCreds  = "platform_sysrole_creds"
-	DbPlatformSysRoleUsers  = "platform_sysrole_users"
-	DbPlatformSysUserAccess = "platform_sysuser_business_access"
+	DbPlatformSysClients    = DbPrefix + "platform_sysclients"
+	DbPlatformSysUsers      = DbPrefix + "platform_sysusers"
+	DbPlatformSysRoles      = DbPrefix + "platform_sysroles"
+	DbPlatformSysRoleCreds  = DbPrefix + "platform_sysrole_creds"
+	DbPlatformSysRoleUsers  = DbPrefix + "platform_sysrole_users"
+	DbPlatformSysUserAccess = DbPrefix + "platform_sysuser_business_access"
 
-	DbPlatformAppClients   = "platform_appclients"
-	DbPlatformAppUsers     = "platform_appusers"
-	DbPlatformAppRoles     = "platform_approles"
-	DbPlatformAppRoleUsers = "platform_approle_users"
-	DbPlatformAppRoleCreds = "platform_approle_creds"
+	DbPlatformAppClients   = DbPrefix + "platform_appclients"
+	DbPlatformAppUsers     = DbPrefix + "platform_appusers"
+	DbPlatformAppRoles     = DbPrefix + "platform_approles"
+	DbPlatformAppRoleUsers = DbPrefix + "platform_approle_users"
+	DbPlatformAppRoleCreds = DbPrefix + "platform_approle_creds"
 
-	DbPlatformBusinessUser = "platform_business_users"
-	DbPlatformBusinesses   = "platform_businesses"
-	DbPlatformRegions      = "platform_regions"
-	DbPlatformCountries    = "platform_countries"
-	DbPlatformIndustries   = "platform_industries"
+	DbPlatformBusinessUser = DbPrefix + "platform_business_users"
+	DbPlatformBusinesses   = DbPrefix + "platform_businesses"
+	DbPlatformRegions      = DbPrefix + "platform_regions"
+	DbPlatformCountries    = DbPrefix + "platform_countries"
+	DbPlatformIndustries   = DbPrefix + "platform_industries"
 
-	DbSites       = "sites"
-	DbDepartments = "departments"
+	DbSites       = DbPrefix + "platform_sites"
+	DbDepartments = DbPrefix + "platform_departments"
 )
 
 const (

@@ -105,7 +105,7 @@ func (t *IndustryMongoDBDao) List(filter string, sort string, skip int64, limit 
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}

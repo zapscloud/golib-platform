@@ -85,7 +85,10 @@ func (p *SysAccessMongoDBDao) List(sys_filter string, filter string, sort string
 		opts.SetLimit(limit)
 	}
 
-	filterdoc = append(filterdoc, bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID})
+	filterdoc = append(filterdoc,
+		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
+
 	log.Println("Parameter values ", filterdoc, opts)
 	cursor, err := collection.Find(ctx, filterdoc, opts)
 	if err != nil {
@@ -117,8 +120,7 @@ func (p *SysAccessMongoDBDao) List(sys_filter string, filter string, sort string
 
 	// Add base business filter
 	basefilterdoc := bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID}
-	sysfilterdoc = append(sysfilterdoc, basefilterdoc)
-
+	sysfilterdoc = append(sysfilterdoc, basefilterdoc, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	totalcount, err := collection.CountDocuments(ctx, sysfilterdoc)
 	if err != nil {
 		return nil, err
@@ -149,7 +151,9 @@ func (p *SysAccessMongoDBDao) Get(accessid string) (utils.Map, error) {
 
 	filter := bson.D{{Key: platform_common.FLD_SYS_ACCESS_ID, Value: accessid}, {}}
 
-	filter = append(filter, bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID})
+	filter = append(filter,
+		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Get:: Got filter ", filter)
 
@@ -185,7 +189,9 @@ func (p *SysAccessMongoDBDao) Find(filter string) (utils.Map, error) {
 	if err != nil {
 		fmt.Println("Error on filter Unmarshal", err)
 	}
-	bfilter = append(bfilter, bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID})
+	bfilter = append(bfilter,
+		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Find:: Got filter ", bfilter)
 	singleResult := collection.FindOne(ctx, bfilter)
@@ -271,7 +277,9 @@ func (p *SysAccessMongoDBDao) GetRoleDetails(roleid string) (utils.Map, error) {
 
 	filter := bson.D{{Key: platform_common.FLD_SYS_ACCESS_ROLE_ID, Value: roleid}, {}}
 
-	filter = append(filter, bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID})
+	filter = append(filter,
+		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Get:: Got filter ", filter)
 
@@ -304,7 +312,9 @@ func (p *SysAccessMongoDBDao) GetSiteDetails(siteid string) (utils.Map, error) {
 
 	filter := bson.D{{Key: platform_common.FLD_SYS_ACCESS_SITE_ID, Value: siteid}, {}}
 
-	filter = append(filter, bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID})
+	filter = append(filter,
+		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Get:: Got filter ", filter)
 
@@ -337,7 +347,9 @@ func (p *SysAccessMongoDBDao) GetDepartmentDetails(departmentid string) (utils.M
 
 	filter := bson.D{{Key: platform_common.FLD_SYS_ACCESS_DEPARTMENT_ID, Value: departmentid}, {}}
 
-	filter = append(filter, bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID})
+	filter = append(filter,
+		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Get:: Got filter ", filter)
 

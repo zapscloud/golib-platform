@@ -101,7 +101,7 @@ func (t *AppRoleMongoDBDao) List(filter string, sort string, skip int64, limit i
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -308,7 +308,9 @@ func (t *AppRoleMongoDBDao) BusinessList(roleid string, filter string, sort stri
 		opts.SetLimit(limit)
 	}
 
-	filterdoc = append(filterdoc, bson.E{Key: platform_common.FLD_APP_ROLE_ID, Value: roleid})
+	filterdoc = append(filterdoc,
+		bson.E{Key: platform_common.FLD_APP_ROLE_ID, Value: roleid},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Parameter values ", filterdoc, opts)
 	cursor, err := collection.Find(ctx, filterdoc, opts)
@@ -337,7 +339,7 @@ func (t *AppRoleMongoDBDao) BusinessList(roleid string, filter string, sort stri
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -407,12 +409,13 @@ func (t *AppRoleMongoDBDao) FindCredential(filter string) (utils.Map, error) {
 		return nil, err
 	}
 
-	var bfilter interface{}
+	bfilter := bson.D{}
 	err = bson.UnmarshalExtJSON([]byte(filter), true, &bfilter)
 	if err != nil {
 		fmt.Println("Error on filter Unmarshal", err)
 	}
-
+	// Add FLS_IS_DELETED flag also
+	bfilter = append(bfilter, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	log.Println("FindCredential:: Got filter ", bfilter)
 
 	singleResult := collection.FindOne(ctx, bfilter)
@@ -441,7 +444,9 @@ func (t *AppRoleMongoDBDao) GetCredentials(role_id string) (utils.Map, error) {
 		return nil, err
 	}
 
-	filterdoc := bson.D{{Key: platform_common.FLD_APP_ROLE_ID, Value: role_id}, {}}
+	filterdoc := bson.D{
+		{Key: platform_common.FLD_APP_ROLE_ID, Value: role_id},
+		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("FindCredential:: Got filter ", filterdoc)
 
@@ -491,12 +496,13 @@ func (t *AppRoleMongoDBDao) FindUser(filter string) (utils.Map, error) {
 		return nil, err
 	}
 
-	var bfilter interface{}
+	bfilter := bson.D{}
 	err = bson.UnmarshalExtJSON([]byte(filter), true, &bfilter)
 	if err != nil {
 		fmt.Println("Error on filter Unmarshal", err)
 	}
-
+	// Add FLS_IS_DELETED flag also
+	bfilter = append(bfilter, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	log.Println("FindRoleUsers:: Got filter ", bfilter)
 
 	singleResult := collection.FindOne(ctx, bfilter)
@@ -568,7 +574,9 @@ func (t *AppRoleMongoDBDao) GetUsers(role_id string) (utils.Map, error) {
 		return nil, err
 	}
 
-	filterdoc := bson.D{{Key: platform_common.FLD_APP_ROLE_ID, Value: role_id}, {}}
+	filterdoc := bson.D{
+		{Key: platform_common.FLD_APP_ROLE_ID, Value: role_id},
+		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("GetUsers:: Got filter ", filterdoc)
 

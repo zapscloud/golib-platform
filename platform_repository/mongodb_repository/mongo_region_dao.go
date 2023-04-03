@@ -102,7 +102,7 @@ func (t *RegionMongoDBDao) List(filter string, sort string, skip int64, limit in
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -191,7 +191,9 @@ func (t *RegionMongoDBDao) Authenticate(email string, password string) (utils.Ma
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformRegions)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_SYS_USER_EMAILID, Value: email}, {Key: platform_common.FLD_SYS_USER_PASSWORD, Value: password}}
+	filter := bson.D{
+		{Key: platform_common.FLD_SYS_USER_EMAILID, Value: email},
+		{Key: platform_common.FLD_SYS_USER_PASSWORD, Value: password}}
 
 	log.Println("Find:: Got filter ", filter)
 

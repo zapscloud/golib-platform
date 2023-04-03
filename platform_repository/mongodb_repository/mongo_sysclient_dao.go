@@ -100,7 +100,7 @@ func (t SysClientMongoDBDao) List(filter string, sort string, skip int64, limit 
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -126,7 +126,8 @@ func (t SysClientMongoDBDao) GetDetails(userid string) (utils.Map, error) {
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformSysClients)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_CLIENT_ID, Value: userid},
+	filter := bson.D{
+		{Key: platform_common.FLD_CLIENT_ID, Value: userid},
 		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("Find:: Got filter ", filter)
@@ -175,17 +176,19 @@ func (t SysClientMongoDBDao) Update(userid string, indata utils.Map) (utils.Map,
 }
 
 // Find - Find by code
-func (t SysClientMongoDBDao) Authenticate(email string, password string) (utils.Map, error) {
+func (t SysClientMongoDBDao) Authenticate(clientId string, clientSecret string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
-	log.Println("SysClientMongoDBDao::Find:: Begin ", email)
+	log.Println("SysClientMongoDBDao::Find:: Begin ", clientId)
 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformSysClients)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: "app_client_email", Value: email}, {Key: "app_client_password", Value: password}}
-
+	filter := bson.D{
+		{Key: platform_common.FLD_CLIENT_ID, Value: clientId},
+		{Key: platform_common.FLD_CLIENT_SECRET, Value: clientSecret},
+		{Key: db_common.FLD_IS_DELETED, Value: false}}
 	log.Println("Find:: Got filter ", filter)
 
 	singleResult := collection.FindOne(ctx, filter)
@@ -241,11 +244,13 @@ func (t SysClientMongoDBDao) Find(filter string) (utils.Map, error) {
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformSysClients)
 	log.Println("Find:: Got Collection ", err)
 
-	var bfilter interface{}
+	bfilter := bson.D{}
 	err = bson.UnmarshalExtJSON([]byte(filter), true, &bfilter)
 	if err != nil {
 		fmt.Println("Error on filter Unmarshal", err)
 	}
+
+	bfilter = append(bfilter, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Find:: Got filter ", bfilter)
 	singleResult := collection.FindOne(ctx, bfilter)

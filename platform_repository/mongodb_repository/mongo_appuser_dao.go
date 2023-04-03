@@ -102,7 +102,7 @@ func (t *AppUserMongoDBDao) List(filter string, sort string, skip int64, limit i
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -352,7 +352,9 @@ func (t *AppUserMongoDBDao) BusinessList(userid string, filter string, sort stri
 		opts.SetLimit(limit)
 	}
 
-	filterdoc = append(filterdoc, bson.E{Key: platform_common.FLD_APP_USER_ID, Value: userid})
+	filterdoc = append(filterdoc,
+		bson.E{Key: platform_common.FLD_APP_USER_ID, Value: userid},
+		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Parameter values ", filterdoc, opts)
 	cursor, err := collection.Find(ctx, filterdoc, opts)
@@ -381,7 +383,7 @@ func (t *AppUserMongoDBDao) BusinessList(userid string, filter string, sort stri
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}

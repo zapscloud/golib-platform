@@ -336,7 +336,8 @@ func (p *BusinessMongoDBDao) GetAccessDetails(accessid string) (utils.Map, error
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformBusinessUser)
 	log.Println("GetAccessDetails:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_BUSINESS_USER_ID, Value: accessid},
+	filter := bson.D{
+		{Key: platform_common.FLD_BUSINESS_USER_ID, Value: accessid},
 		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("Find:: Got filter ", filter)
@@ -461,7 +462,7 @@ func (p *BusinessMongoDBDao) UserList(businessid string, filter string, sort str
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -580,7 +581,7 @@ func (p *BusinessMongoDBDao) BusinessList(userId string, filter string, sort str
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}

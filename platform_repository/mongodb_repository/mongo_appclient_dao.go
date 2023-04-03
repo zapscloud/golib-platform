@@ -100,7 +100,7 @@ func (t AppClientMongoDBDao) List(filter string, sort string, skip int64, limit 
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -126,7 +126,8 @@ func (t AppClientMongoDBDao) GetDetails(userid string) (utils.Map, error) {
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_CLIENT_ID, Value: userid},
+	filter := bson.D{
+		{Key: platform_common.FLD_CLIENT_ID, Value: userid},
 		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("Find:: Got filter ", filter)
@@ -184,7 +185,10 @@ func (t AppClientMongoDBDao) Authenticate(clientId string, clientSecret string) 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_CLIENT_ID, Value: clientId}, {Key: platform_common.FLD_CLIENT_SECRET, Value: clientSecret}}
+	filter := bson.D{
+		{Key: platform_common.FLD_CLIENT_ID, Value: clientId},
+		{Key: platform_common.FLD_CLIENT_SECRET, Value: clientSecret},
+		{Key: db_common.FLD_IS_DELETED, Value: false}}
 
 	log.Println("Find:: Got filter ", filter)
 
@@ -241,11 +245,14 @@ func (t AppClientMongoDBDao) Find(filter string) (utils.Map, error) {
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
 	log.Println("Find:: Got Collection ", err)
 
-	var bfilter interface{}
+	bfilter := bson.D{}
 	err = bson.UnmarshalExtJSON([]byte(filter), true, &bfilter)
 	if err != nil {
 		fmt.Println("Error on filter Unmarshal", err)
 	}
+
+	// Add IS_DELETE flag filter
+	bfilter = append(bfilter, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Find:: Got filter ", bfilter)
 	singleResult := collection.FindOne(ctx, bfilter)

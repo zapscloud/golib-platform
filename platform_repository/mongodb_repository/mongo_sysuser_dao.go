@@ -105,7 +105,7 @@ func (t *SysUserMongoDBDao) List(filter string, sort string, skip int64, limit i
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.D{})
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -131,7 +131,8 @@ func (t *SysUserMongoDBDao) GetDetails(userid string) (utils.Map, error) {
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformSysUsers)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_SYS_USER_ID, Value: userid},
+	filter := bson.D{
+		{Key: platform_common.FLD_SYS_USER_ID, Value: userid},
 		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 	log.Println("Find:: Got filter ", filter)
 

@@ -129,7 +129,7 @@ func (p *BusinessMongoDBDao) List(sys_filter string, filter string, sort string,
 	return response, nil
 }
 
-func (p *BusinessMongoDBDao) GetDetails(business_id string) (utils.Map, error) {
+func (p *BusinessMongoDBDao) Get(business_id string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

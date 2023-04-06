@@ -65,7 +65,7 @@ func NewSysAccessService(props utils.Map) (SysAccessService, error) {
 	p.daoAppUser = platform_repository.NewAppUserDao(p.GetClient())
 	p.daoBusiness = platform_repository.NewBusinessDao(p.GetClient())
 
-	_, err = p.daoBusiness.GetDetails(businessId)
+	_, err = p.daoBusiness.Get(businessId)
 	if err != nil {
 		err := &utils.AppError{ErrorCode: funcode + "01", ErrorMsg: "Invalid sys_business_id", ErrorDetail: "Given sys_business_id is not exist"}
 		return nil, err
@@ -130,7 +130,7 @@ func (p *sysAccessBaseService) GrantPermission(indata utils.Map) (utils.Map, err
 		log.Println("GrantPermission: UserId not found  ", valUserId)
 		err := &utils.AppError{ErrorCode: funcode + "01", ErrorMsg: "UserId not found ", ErrorDetail: "UserId not found "}
 		return indata, err
-	} else if _, err := p.daoSysUser.GetDetails(valUserId.(string)); err != nil {
+	} else if _, err := p.daoSysUser.Get(valUserId.(string)); err != nil {
 		log.Println("GrantPermission: UserId not found  ", valUserId)
 		err := &utils.AppError{ErrorCode: funcode + "02", ErrorMsg: "UserId not found ", ErrorDetail: "UserId not found "}
 		return indata, err

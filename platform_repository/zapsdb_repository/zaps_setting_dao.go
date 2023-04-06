@@ -50,7 +50,7 @@ func (t *SettingZapsDBDao) List(filter string, sort string, skip int64, limit in
 }
 
 // GetDetails - Find by code
-func (t *SettingZapsDBDao) GetDetails(settingid string) (utils.Map, error) {
+func (t *SettingZapsDBDao) Get(settingid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

@@ -15,7 +15,7 @@ import (
 // RegionService - Users Service structure
 type RegionService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	GetDetails(regionid string) (utils.Map, error)
+	Get(regionid string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (utils.Map, error)
 	Update(regionid string, indata utils.Map) (utils.Map, error)
@@ -72,10 +72,10 @@ func (p *regionBaseService) List(filter string, sort string, skip int64, limit i
 }
 
 // GetDetails - Find By Code
-func (p *regionBaseService) GetDetails(regionid string) (utils.Map, error) {
+func (p *regionBaseService) Get(regionid string) (utils.Map, error) {
 	log.Printf("RegionService::GetDetails::  Begin %v", regionid)
 
-	data, err := p.daoRegion.GetDetails(regionid)
+	data, err := p.daoRegion.Get(regionid)
 
 	log.Println("RegionService::GetDetails:: End ", data, err)
 	return data, err
@@ -107,7 +107,7 @@ func (p *regionBaseService) Create(indata utils.Map) (utils.Map, error) {
 	// Update converted regionId back to indata
 	indata[platform_common.FLD_REGION_ID] = regionId
 
-	_, err = p.daoRegion.GetDetails(regionId)
+	_, err = p.daoRegion.Get(regionId)
 	if err == nil {
 		err := &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Existing Region ID !", ErrorDetail: "Given Region ID already exist"}
 		return indata, err
@@ -119,7 +119,7 @@ func (p *regionBaseService) Create(indata utils.Map) (utils.Map, error) {
 	}
 
 	log.Println("UserService::Create - End ")
-	return p.daoRegion.GetDetails(regionId)
+	return p.daoRegion.Get(regionId)
 }
 
 // Update - Update Service
@@ -171,7 +171,7 @@ func (p *regionBaseService) Delete(regionid string, delete_permanent bool) error
 }
 
 func (p *regionBaseService) validateKeyExist(key string) (utils.Map, error) {
-	data, err := p.daoRegion.GetDetails(key)
+	data, err := p.daoRegion.Get(key)
 	if err != nil {
 		err := &utils.AppError{ErrorStatus: 400, ErrorMsg: "Bad Request", ErrorDetail: "Region not found"}
 		return utils.Map{}, err

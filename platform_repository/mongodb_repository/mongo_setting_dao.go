@@ -114,7 +114,7 @@ func (t *SettingMongoDBDao) List(filter string, sort string, skip int64, limit i
 	return response, nil
 }
 
-func (t *SettingMongoDBDao) GetDetails(settings_id string) (utils.Map, error) {
+func (t *SettingMongoDBDao) Get(settings_id string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

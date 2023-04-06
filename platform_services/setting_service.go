@@ -14,7 +14,7 @@ import (
 // SysSettingService - Users Service structure
 type SysSettingService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	GetDetails(clientid string) (utils.Map, error)
+	Get(clientid string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (string, error)
 	Update(clientid string, indata utils.Map) (utils.Map, error)
@@ -71,10 +71,10 @@ func (p *appSettingBaseService) List(filter string, sort string, skip int64, lim
 }
 
 // GetDetails - Find By Code
-func (p *appSettingBaseService) GetDetails(clientid string) (utils.Map, error) {
+func (p *appSettingBaseService) Get(clientid string) (utils.Map, error) {
 	log.Printf("SysSettingService::GetDetails::  Begin %v", clientid)
 
-	data, err := p.daoSysSetting.GetDetails(clientid)
+	data, err := p.daoSysSetting.Get(clientid)
 
 	log.Println("SysSettingService::GetDetails:: End ", data, err)
 	return data, err
@@ -104,7 +104,7 @@ func (p *appSettingBaseService) Create(indata utils.Map) (string, error) {
 	}
 	log.Println("Provided Settings ID:", settingsId)
 
-	_, err := p.daoSysSetting.GetDetails(settingsId)
+	_, err := p.daoSysSetting.Get(settingsId)
 	if err == nil {
 		err := &utils.AppError{ErrorCode: "S3040102", ErrorMsg: "Existing app_setting_id", ErrorDetail: "Given app_setting_id is already exist"}
 		return settingsId, err

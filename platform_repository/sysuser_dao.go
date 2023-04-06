@@ -26,7 +26,7 @@ type SysUserDao interface {
 	// Delete - Delete Collection
 	Delete(userid string) (int64, error)
 
-	GetDetails(userid string) (utils.Map, error)
+	Get(userid string) (utils.Map, error)
 }
 
 // NewSysUserDao - Contruct User Dao

@@ -99,7 +99,7 @@ func CreateAppUser(srv platform_services.AppUserService) {
 }
 
 func GetAppUser(srv platform_services.AppUserService) {
-	res, err := srv.GetDetails("user003")
+	res, err := srv.Get("user003")
 	fmt.Println("Get AppUser", err)
 	pretty.Println(res)
 
@@ -208,7 +208,7 @@ func FindSysBusiness(srv platform_services.BusinessService) {
 }
 
 func GetSysBusiness(srv platform_services.BusinessService) {
-	res, err := srv.GetDetails("business002")
+	res, err := srv.Get("business002")
 	fmt.Println("Get AppUser", err)
 	pretty.Println(res)
 
@@ -289,7 +289,7 @@ func UpdateAppMongoRegion(srv platform_services.RegionService) {
 }
 
 func GetAppRegion(srv platform_services.RegionService) {
-	res, err := srv.GetDetails(db_common.DEF_REGION_ID)
+	res, err := srv.Get(db_common.DEF_REGION_ID)
 	fmt.Println("Get GetAppRegion", err)
 	pretty.Println(res)
 
@@ -329,7 +329,7 @@ func FindSysClient(srv platform_services.AppClientService) {
 }
 
 func GetSysClient(srv platform_services.AppClientService) {
-	res, err := srv.GetDetails("client001")
+	res, err := srv.Get("client001")
 	fmt.Println("Get AppUser", err)
 	pretty.Println(res)
 
@@ -389,7 +389,7 @@ func FindSysSetting(srv platform_services.SysSettingService) {
 }
 
 func GetSysSetting(srv platform_services.SysSettingService) {
-	res, err := srv.GetDetails("appname")
+	res, err := srv.Get("appname")
 	fmt.Println("Get AppUser", err)
 	pretty.Println(res)
 

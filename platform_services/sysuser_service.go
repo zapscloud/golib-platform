@@ -16,7 +16,7 @@ import (
 // SysUserService - Users Service structure
 type SysUserService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	GetDetails(userID string) (utils.Map, error)
+	Get(userID string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (utils.Map, error)
 	Update(userID string, indata utils.Map) (utils.Map, error)
@@ -77,10 +77,10 @@ func (p *sysUserBaseService) List(filter string, sort string, skip int64, limit 
 }
 
 // GetDetails - Find By Code
-func (p *sysUserBaseService) GetDetails(userID string) (utils.Map, error) {
+func (p *sysUserBaseService) Get(userID string) (utils.Map, error) {
 	log.Printf("SysUserService::GetDetails::  Begin %v", userID)
 
-	data, err := p.daoSysUser.GetDetails(userID)
+	data, err := p.daoSysUser.Get(userID)
 
 	log.Println("SysUserService::GetDetails:: End ", data, err)
 	return data, err

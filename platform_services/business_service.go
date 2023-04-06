@@ -18,7 +18,7 @@ import (
 type BusinessService interface {
 
 	// Get Business Details
-	GetDetails(businessId string) (utils.Map, error)
+	Get(businessId string) (utils.Map, error)
 
 	// Get Business List
 	List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
@@ -107,10 +107,10 @@ func (p *businessBaseService) List(sys_filter string, filter string, sort string
 }
 
 // GetDetails - Find By Code
-func (p *businessBaseService) GetDetails(businessId string) (utils.Map, error) {
+func (p *businessBaseService) Get(businessId string) (utils.Map, error) {
 	log.Printf("BusinessService::GetDetails::  Begin %v", businessId)
 
-	data, err := p.daoBusiness.GetDetails(businessId)
+	data, err := p.daoBusiness.Get(businessId)
 
 	log.Println("BusinessService::GetDetails:: End ", data, err)
 	return data, err
@@ -147,7 +147,7 @@ func (p *businessBaseService) Create(indata utils.Map) (utils.Map, error) {
 	// Assign new/case converted businessId
 	indata[platform_common.FLD_BUSINESS_ID] = businessId
 
-	_, err := p.daoBusiness.GetDetails(businessId)
+	_, err := p.daoBusiness.Get(businessId)
 	if err == nil {
 		err := &utils.AppError{ErrorCode: "S3030201", ErrorMsg: "Invalid Business id !", ErrorDetail: "Business ID given is already exist"}
 		return indata, err
@@ -158,7 +158,7 @@ func (p *businessBaseService) Create(indata utils.Map) (utils.Map, error) {
 		err := &utils.AppError{ErrorCode: "S3030202", ErrorMsg: "Business region missing!", ErrorDetail: "Business Region should be specified!"}
 		return indata, err
 	}
-	_, err = p.daoAppRegion.GetDetails(dataval.(string))
+	_, err = p.daoAppRegion.Get(dataval.(string))
 	if err != nil {
 		err := &utils.AppError{ErrorCode: "S3030203", ErrorMsg: "Invalid Business region !", ErrorDetail: "Business Region given is invalid"}
 		return indata, err
@@ -222,12 +222,12 @@ func (p *businessBaseService) AddUser(businessId string, userId string) (utils.M
 
 	log.Println("UserService::Create - Begin")
 
-	_, err := p.daoBusiness.GetDetails(businessId)
+	_, err := p.daoBusiness.Get(businessId)
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = p.daoAppUser.GetDetails(userId)
+	_, err = p.daoAppUser.Get(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -251,12 +251,12 @@ func (p *businessBaseService) RemoveUser(businessId string, userId string) (stri
 
 	log.Println("UserService::RemoveUser - Begin")
 
-	_, err := p.daoBusiness.GetDetails(businessId)
+	_, err := p.daoBusiness.Get(businessId)
 	if err != nil {
 		return "", err
 	}
 
-	_, err = p.daoAppUser.GetDetails(userId)
+	_, err = p.daoAppUser.Get(userId)
 	if err != nil {
 		return "", err
 	}
@@ -279,12 +279,12 @@ func (p *businessBaseService) RemoveUser(businessId string, userId string) (stri
 
 // GetDetails - Find By Code
 func (p *businessBaseService) GetUserDetails(businessId string, userId string) (utils.Map, error) {
-	_, err := p.daoBusiness.GetDetails(businessId)
+	_, err := p.daoBusiness.Get(businessId)
 	if err != nil {
 		return utils.Map{}, err
 	}
 
-	_, err = p.daoAppUser.GetDetails(userId)
+	_, err = p.daoAppUser.Get(userId)
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -302,7 +302,7 @@ func (p *businessBaseService) GetUserDetails(businessId string, userId string) (
 
 // GetUsers - Get all BusinessUser records for given businessId
 func (p *businessBaseService) GetUsers(businessId string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
-	_, err := p.daoBusiness.GetDetails(businessId)
+	_, err := p.daoBusiness.Get(businessId)
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -318,7 +318,7 @@ func (p *businessBaseService) GetUsers(businessId string, filter string, sort st
 
 // GetBusinessList - Get all BusinessUser records for given businessId
 func (p *businessBaseService) GetBusinessList(userId string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
-	_, err := p.daoAppUser.GetDetails(userId)
+	_, err := p.daoAppUser.Get(userId)
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -333,7 +333,7 @@ func (p *businessBaseService) GetBusinessList(userId string, filter string, sort
 }
 
 func (p *businessBaseService) validateKeyExist(key string) (utils.Map, error) {
-	data, err := p.daoBusiness.GetDetails(key)
+	data, err := p.daoBusiness.Get(key)
 	if err != nil {
 		err := &utils.AppError{ErrorStatus: 400, ErrorMsg: "Bad Request", ErrorDetail: "BusinessId not found"}
 		return utils.Map{}, err

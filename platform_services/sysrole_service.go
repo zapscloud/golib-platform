@@ -15,7 +15,7 @@ import (
 // SysRoleService - Users Service structure
 type SysRoleService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	GetDetails(role_id string) (utils.Map, error)
+	Get(role_id string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (utils.Map, error)
 	Update(role_id string, indata utils.Map) (utils.Map, error)
@@ -81,10 +81,10 @@ func (p *sysRoleBaseService) List(filter string, sort string, skip int64, limit 
 }
 
 // GetDetails - Find By Code
-func (p *sysRoleBaseService) GetDetails(role_id string) (utils.Map, error) {
+func (p *sysRoleBaseService) Get(role_id string) (utils.Map, error) {
 	log.Printf("SysRoleService::GetDetails::  Begin %v", role_id)
 
-	data, err := p.daoSysRole.GetDetails(role_id)
+	data, err := p.daoSysRole.Get(role_id)
 
 	log.Println("SysRoleService::GetDetails:: End ", data, err)
 	return data, err

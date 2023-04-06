@@ -15,7 +15,7 @@ import (
 // AppRoleService - Users Service structure
 type AppRoleService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	GetDetails(role_id string) (utils.Map, error)
+	Get(role_id string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (utils.Map, error)
 	Update(role_id string, indata utils.Map) (utils.Map, error)
@@ -80,10 +80,10 @@ func (p *appRoleBaseService) List(filter string, sort string, skip int64, limit 
 }
 
 // GetDetails - Find By Code
-func (p *appRoleBaseService) GetDetails(role_id string) (utils.Map, error) {
+func (p *appRoleBaseService) Get(role_id string) (utils.Map, error) {
 	log.Printf("AppRoleService::GetDetails::  Begin %v", role_id)
 
-	data, err := p.daoAppRole.GetDetails(role_id)
+	data, err := p.daoAppRole.Get(role_id)
 
 	log.Println("AppRoleService::GetDetails:: End ", data, err)
 	return data, err

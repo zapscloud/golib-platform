@@ -51,7 +51,7 @@ func (t *AppClientZapsDBDao) List(filter string, sort string, skip int64, limit 
 }
 
 // GetDetails - Find by code
-func (t *AppClientZapsDBDao) GetDetails(clientid string) (utils.Map, error) {
+func (t *AppClientZapsDBDao) Get(clientid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

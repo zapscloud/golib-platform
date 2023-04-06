@@ -59,7 +59,7 @@ func (t BusinessZapsDBDao) List(sys_filter string, filter string, sort string, s
 }
 
 // GetDetails - Find by code
-func (t BusinessZapsDBDao) GetDetails(businessid string) (utils.Map, error) {
+func (t BusinessZapsDBDao) Get(businessid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

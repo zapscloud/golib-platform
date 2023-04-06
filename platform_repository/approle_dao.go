@@ -20,7 +20,7 @@ type AppRoleDao interface {
 	// Delete - Delete Collection
 	Delete(roleid string) (int64, error)
 
-	GetDetails(roleid string) (utils.Map, error)
+	Get(roleid string) (utils.Map, error)
 
 	// Credentials
 	AddCredentials(roleID string, indata utils.Map) (utils.Map, error)

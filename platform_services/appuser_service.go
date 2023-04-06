@@ -16,7 +16,7 @@ import (
 // AppUserService - Users Service structure
 type AppUserService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	GetDetails(userId string) (utils.Map, error)
+	Get(userId string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (utils.Map, error)
 	Update(userId string, indata utils.Map) (utils.Map, error)
@@ -80,10 +80,10 @@ func (p *appUserBaseService) List(filter string, sort string, skip int64, limit 
 }
 
 // GetDetails - Find By Code
-func (p *appUserBaseService) GetDetails(userId string) (utils.Map, error) {
+func (p *appUserBaseService) Get(userId string) (utils.Map, error) {
 	log.Printf("AppUserService::GetDetails::  Begin %v", userId)
 
-	data, err := p.daoAppUser.GetDetails(userId)
+	data, err := p.daoAppUser.Get(userId)
 
 	log.Println("AppUserService::GetDetails:: End ", data, err)
 	return data, err
@@ -220,7 +220,7 @@ func (p *appUserBaseService) ChangePassword(userId string, newpwd string) (utils
 }
 
 func (p *appUserBaseService) BusinessList(userId string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
-	_, err := p.daoAppUser.GetDetails(userId)
+	_, err := p.daoAppUser.Get(userId)
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -232,7 +232,7 @@ func (p *appUserBaseService) BusinessList(userId string, filter string, sort str
 
 	for _, value := range dataBusiness[db_common.LIST_RESULT].([]utils.Map) {
 		log.Println("AppUserService: BusinessList ", value)
-		dataBusiness, err := p.daoBusiness.GetDetails(value[platform_common.FLD_BUSINESS_ID].(string))
+		dataBusiness, err := p.daoBusiness.Get(value[platform_common.FLD_BUSINESS_ID].(string))
 		if err != nil {
 			continue
 		}

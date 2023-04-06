@@ -119,7 +119,7 @@ func (t *RegionMongoDBDao) List(filter string, sort string, skip int64, limit in
 	return response, nil
 }
 
-func (t *RegionMongoDBDao) GetDetails(regionId string) (utils.Map, error) {
+func (t *RegionMongoDBDao) Get(regionId string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

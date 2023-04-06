@@ -14,7 +14,7 @@ import (
 // AppClientService - Users Service structure
 type AppClientService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	GetDetails(clientid string) (utils.Map, error)
+	Get(clientid string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (string, error)
 	Update(clientid string, indata utils.Map) (utils.Map, error)
@@ -70,10 +70,10 @@ func (p *appClientBaseService) List(filter string, sort string, skip int64, limi
 }
 
 // GetDetails - Find By Code
-func (p *appClientBaseService) GetDetails(clientid string) (utils.Map, error) {
+func (p *appClientBaseService) Get(clientid string) (utils.Map, error) {
 	log.Printf("AppClientService::GetDetails::  Begin %v", clientid)
 
-	data, err := p.daoAppClient.GetDetails(clientid)
+	data, err := p.daoAppClient.Get(clientid)
 
 	log.Println("AppClientService::GetDetails:: End ", data, err)
 	return data, err
@@ -104,7 +104,7 @@ func (p *appClientBaseService) Create(indata utils.Map) (string, error) {
 	}
 	log.Println("Provided Profile ID:", clientId)
 
-	_, err := p.daoAppClient.GetDetails(clientId)
+	_, err := p.daoAppClient.Get(clientId)
 	if err == nil {
 		err := &utils.AppError{ErrorCode: "S3040102", ErrorMsg: "Existing client_id", ErrorDetail: "Given client_id is already exist"}
 		return dataval.(string), err

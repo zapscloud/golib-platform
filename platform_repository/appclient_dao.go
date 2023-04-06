@@ -23,7 +23,7 @@ type AppClientDao interface {
 	// Delete - Delete Collection
 	Delete(clientid string) (int64, error)
 
-	GetDetails(clientid string) (utils.Map, error)
+	Get(clientid string) (utils.Map, error)
 }
 
 // type appClientBaseDao struct {

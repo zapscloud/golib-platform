@@ -23,7 +23,7 @@ type AppUserDao interface {
 	// Delete - Delete Collection
 	Delete(userid string) (int64, error)
 
-	GetDetails(userid string) (utils.Map, error)
+	Get(userid string) (utils.Map, error)
 
 	BusinessList(userid string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
 }

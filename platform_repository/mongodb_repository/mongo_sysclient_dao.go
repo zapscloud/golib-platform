@@ -117,7 +117,7 @@ func (t SysClientMongoDBDao) List(filter string, sort string, skip int64, limit 
 	return response, nil
 }
 
-func (t SysClientMongoDBDao) GetDetails(userid string) (utils.Map, error) {
+func (t SysClientMongoDBDao) Get(userid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

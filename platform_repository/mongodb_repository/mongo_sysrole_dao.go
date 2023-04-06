@@ -119,7 +119,7 @@ func (t *SysRoleMongoDBDao) List(filter string, sort string, skip int64, limit i
 	return response, nil
 }
 
-func (t *SysRoleMongoDBDao) GetDetails(roleid string) (utils.Map, error) {
+func (t *SysRoleMongoDBDao) Get(roleid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

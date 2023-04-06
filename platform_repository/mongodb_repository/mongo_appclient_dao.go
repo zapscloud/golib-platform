@@ -117,7 +117,7 @@ func (t AppClientMongoDBDao) List(filter string, sort string, skip int64, limit 
 	return response, nil
 }
 
-func (t AppClientMongoDBDao) GetDetails(userid string) (utils.Map, error) {
+func (t AppClientMongoDBDao) Get(userid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

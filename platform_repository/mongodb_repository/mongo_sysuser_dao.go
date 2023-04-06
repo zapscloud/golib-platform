@@ -122,7 +122,7 @@ func (t *SysUserMongoDBDao) List(filter string, sort string, skip int64, limit i
 	return response, nil
 }
 
-func (t *SysUserMongoDBDao) GetDetails(userid string) (utils.Map, error) {
+func (t *SysUserMongoDBDao) Get(userid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
@@ -240,7 +240,7 @@ func (t *SysUserMongoDBDao) Create(indata utils.Map) (utils.Map, error) {
 	log.Println("Inserted a single document: ", insertResult.InsertedID)
 	log.Println("Save - End", userid)
 
-	return t.GetDetails(userid)
+	return t.Get(userid)
 }
 
 // Find - Find by code

@@ -61,7 +61,7 @@ func (t *SysUserZapsDBDao) List(filter string, sort string, skip int64, limit in
 }
 
 // GetDetails - Find by code
-func (t *SysUserZapsDBDao) GetDetails(userid string) (utils.Map, error) {
+func (t *SysUserZapsDBDao) Get(userid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

@@ -61,7 +61,7 @@ func (t *RegionZapsDBDao) List(filter string, sort string, skip int64, limit int
 }
 
 // GetDetails - Find by code
-func (t *RegionZapsDBDao) GetDetails(regionid string) (utils.Map, error) {
+func (t *RegionZapsDBDao) Get(regionid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 

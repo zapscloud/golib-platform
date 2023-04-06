@@ -13,7 +13,7 @@ type BusinessDao interface {
 	InitializeDao(client utils.Map)
 
 	// Business Details
-	GetDetails(businessid string) (utils.Map, error)
+	Get(businessid string) (utils.Map, error)
 
 	// List Businesses
 	List(sys_filter, filter string, sort string, skip int64, limit int64) (utils.Map, error)

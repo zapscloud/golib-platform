@@ -72,6 +72,7 @@ const (
 	FLD_APP_USER_PHONE    = "phone"
 	FLD_APP_USER_FNAME    = "first_name"
 	FLD_APP_USER_LNAME    = "last_name"
+	FLD_APP_USER_OTP      = "password_otp"
 
 	// App Region table fields
 	FLD_REGION_ID             = "region_id"

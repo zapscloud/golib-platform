@@ -202,7 +202,7 @@ func (p *sysUserBaseService) ChangePassword(userid string, newpwd string) (utils
 
 	log.Println("SysUserService::ChangePassword - Begin")
 	indata := utils.Map{
-		"sys_user_password": utils.SHA(newpwd),
+		platform_common.FLD_SYS_USER_PASSWORD: utils.SHA(newpwd),
 	}
 	data, err := p.daoSysUser.Update(userid, indata)
 

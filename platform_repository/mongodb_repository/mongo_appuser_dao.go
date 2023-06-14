@@ -102,7 +102,7 @@ func (t *AppUserMongoDBDao) List(filter string, sort string, skip int64, limit i
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
+	totalcount, err := collection.CountDocuments(ctx, bson.D{{Key: db_common.FLD_IS_DELETED, Value: false}})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -383,7 +383,7 @@ func (t *AppUserMongoDBDao) BusinessList(userid string, filter string, sort stri
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
+	totalcount, err := collection.CountDocuments(ctx, bson.D{{Key: db_common.FLD_IS_DELETED, Value: false}})
 	if err != nil {
 		return utils.Map{}, err
 	}

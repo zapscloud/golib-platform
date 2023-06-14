@@ -100,9 +100,6 @@ func (p *BusinessMongoDBDao) List(filter string, sort string, skip int64, limit 
 		return utils.Map{}, err
 	}
 
-	// Add FLD_IS_DELETE in filter
-	// totalcountDoc := bson.D{}
-	// totalcountDoc = append(totalcountDoc, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	totalcount, err := collection.CountDocuments(ctx, bson.D{{Key: db_common.FLD_IS_DELETED, Value: false}})
 	if err != nil {
 		return utils.Map{}, err
@@ -454,7 +451,7 @@ func (p *BusinessMongoDBDao) UserList(businessid string, filter string, sort str
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
+	totalcount, err := collection.CountDocuments(ctx, bson.D{{Key: db_common.FLD_IS_DELETED, Value: false}})
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -573,7 +570,7 @@ func (p *BusinessMongoDBDao) BusinessList(userId string, filter string, sort str
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
+	totalcount, err := collection.CountDocuments(ctx, bson.D{{Key: db_common.FLD_IS_DELETED, Value: false}})
 	if err != nil {
 		return utils.Map{}, err
 	}

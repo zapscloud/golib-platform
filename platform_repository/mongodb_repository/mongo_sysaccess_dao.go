@@ -107,7 +107,7 @@ func (p *SysAccessMongoDBDao) List(filter string, sort string, skip int64, limit
 	}
 
 	// Add base business filter
-	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
+	totalcount, err := collection.CountDocuments(ctx, bson.D{{Key: db_common.FLD_IS_DELETED, Value: false}})
 	if err != nil {
 		return nil, err
 	}

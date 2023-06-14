@@ -121,7 +121,7 @@ func (p *SysAccessMongoDBDao) List(sys_filter string, filter string, sort string
 	// Add base business filter
 	basefilterdoc := bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID}
 	sysfilterdoc = append(sysfilterdoc, basefilterdoc, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
-	totalcount, err := collection.CountDocuments(ctx, sysfilterdoc)
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return nil, err
 	}

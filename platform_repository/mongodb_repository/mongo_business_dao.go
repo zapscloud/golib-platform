@@ -116,6 +116,7 @@ func (p *BusinessMongoDBDao) List(sys_filter string, filter string, sort string,
 	if err != nil {
 		return utils.Map{}, err
 	}
+	log.Println("Total Documents ", totalcount)
 
 	response := utils.Map{
 		db_common.LIST_SUMMARY: utils.Map{

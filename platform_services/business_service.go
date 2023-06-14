@@ -21,7 +21,7 @@ type BusinessService interface {
 	Get(businessId string) (utils.Map, error)
 
 	// Get Business List
-	List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
+	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
 
 	// Find Business
 	Find(filter string) (utils.Map, error)
@@ -94,7 +94,7 @@ func (p *businessBaseService) EndService() {
 }
 
 // List - List All records
-func (p *businessBaseService) List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (p *businessBaseService) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 
 	log.Println("BusinessService::FindAll - Begin")
 

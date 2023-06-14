@@ -112,7 +112,7 @@ func (p *BusinessMongoDBDao) List(sys_filter string, filter string, sort string,
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
+	totalcount, err := collection.CountDocuments(ctx, filterdoc)
 	if err != nil {
 		return utils.Map{}, err
 	}

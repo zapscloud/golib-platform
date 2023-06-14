@@ -46,7 +46,7 @@ func (t BusinessZapsDBDao) InitializeDao(client utils.Map) {
 }
 
 // List - List all Collections
-func (t BusinessZapsDBDao) List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (t BusinessZapsDBDao) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformBusinesses)
 
 	connection, _ := zapsdb_utils.GetConnection(t.client)

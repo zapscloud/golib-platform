@@ -16,7 +16,7 @@ type BusinessDao interface {
 	Get(businessid string) (utils.Map, error)
 
 	// List Businesses
-	List(sys_filter, filter string, sort string, skip int64, limit int64) (utils.Map, error)
+	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
 
 	// Update - Update Collection
 	Update(businessid string, indata utils.Map) (utils.Map, error)

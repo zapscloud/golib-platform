@@ -11,7 +11,7 @@ type SysAccessDao interface {
 	// InitializeDao
 	InitializeDao(client utils.Map, businessid string)
 
-	List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
+	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
 
 	// Get - Get Access Details
 	Get(accessid string) (utils.Map, error)

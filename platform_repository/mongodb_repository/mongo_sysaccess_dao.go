@@ -29,7 +29,7 @@ func (p *SysAccessMongoDBDao) InitializeDao(client utils.Map, businessId string)
 }
 
 // List - List all Collections
-func (p *SysAccessMongoDBDao) List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (p *SysAccessMongoDBDao) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 	var results []utils.Map
 
 	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformSysUserAccess)
@@ -50,18 +50,6 @@ func (p *SysAccessMongoDBDao) List(sys_filter string, filter string, sort string
 		if err != nil {
 			log.Println("Unmarshal Ext JSON error", err)
 			log.Println(filterdoc)
-		}
-	}
-
-	sysfilterdoc := bson.D{}
-	if len(sys_filter) > 0 {
-		// filters, _ := strconv.Unquote(string(filter))
-		err = bson.UnmarshalExtJSON([]byte(sys_filter), true, &sysfilterdoc)
-		if err != nil {
-			log.Println("Unmarshal Ext JSON error", err)
-			log.Println(filterdoc)
-		} else {
-			filterdoc = append(filterdoc, sysfilterdoc...)
 		}
 	}
 
@@ -119,8 +107,6 @@ func (p *SysAccessMongoDBDao) List(sys_filter string, filter string, sort string
 	}
 
 	// Add base business filter
-	basefilterdoc := bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID}
-	sysfilterdoc = append(sysfilterdoc, basefilterdoc, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return nil, err

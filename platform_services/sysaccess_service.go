@@ -12,7 +12,7 @@ import (
 
 // AccessService - Accesss Service structure
 type SysAccessService interface {
-	List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
+	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
 	Get(appaccessid string) (utils.Map, error)
 
 	GrantPermission(indata utils.Map) (utils.Map, error)
@@ -87,12 +87,12 @@ func (p *sysAccessBaseService) getServiceModuleCode() string {
 }
 
 // List - List All records
-func (p *sysAccessBaseService) List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (p *sysAccessBaseService) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 
 	log.Println("AccessService::FindAll - Begin")
 
 	daoAccess := p.daoSysAccess
-	response, err := daoAccess.List(sys_filter, filter, sort, skip, limit)
+	response, err := daoAccess.List(filter, sort, skip, limit)
 	if err != nil {
 		return nil, err
 	}

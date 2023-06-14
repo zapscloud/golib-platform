@@ -27,7 +27,7 @@ func (p *BusinessMongoDBDao) InitializeDao(client utils.Map) {
 }
 
 // List - List all Collections
-func (p *BusinessMongoDBDao) List(sys_filter string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (p *BusinessMongoDBDao) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 	var results []utils.Map
 
 	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformBusinesses)
@@ -47,18 +47,6 @@ func (p *BusinessMongoDBDao) List(sys_filter string, filter string, sort string,
 		if err != nil {
 			log.Println("Unmarshal Ext JSON error", err)
 			log.Println(filterdoc)
-		}
-	}
-
-	sysfilterdoc := bson.D{}
-	if len(sys_filter) > 0 {
-		// filters, _ := strconv.Unquote(string(filter))
-		err = bson.UnmarshalExtJSON([]byte(sys_filter), true, &sysfilterdoc)
-		if err != nil {
-			log.Println("Unmarshal Ext JSON error", err)
-			log.Println(filterdoc)
-		} else {
-			filterdoc = append(filterdoc, sysfilterdoc...)
 		}
 	}
 
@@ -112,7 +100,7 @@ func (p *BusinessMongoDBDao) List(sys_filter string, filter string, sort string,
 		return utils.Map{}, err
 	}
 
-	totalcount, err := collection.CountDocuments(ctx, filterdoc)
+	totalcount, err := collection.CountDocuments(ctx, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 	if err != nil {
 		return utils.Map{}, err
 	}

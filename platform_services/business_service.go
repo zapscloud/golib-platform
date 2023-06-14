@@ -98,7 +98,7 @@ func (p *businessBaseService) List(sys_filter string, filter string, sort string
 
 	log.Println("BusinessService::FindAll - Begin")
 
-	dataresponse, err := p.daoBusiness.List(sys_filter, filter, sort, skip, limit)
+	dataresponse, err := p.daoBusiness.List(filter, sort, skip, limit)
 	if err != nil {
 		return nil, err
 	}

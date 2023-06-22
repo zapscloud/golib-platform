@@ -11,15 +11,15 @@ import (
 	"github.com/zapscloud/golib-utils/utils"
 )
 
-// SysClientService - Users Service structure
-type SysClientService interface {
+// ClientsService - Users Service structure
+type ClientsService interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
 	Get(clientid string) (utils.Map, error)
 	Find(filter string) (utils.Map, error)
 	Create(indata utils.Map) (string, error)
 	Update(clientid string, indata utils.Map) (utils.Map, error)
 	Delete(clientid string) error
-	Authenticate(useremail string, userpwd string) (utils.Map, error)
+	Authenticate(clientId string, clientSecret string, clientType string, clientScope string) (utils.Map, error)
 
 	BeginTransaction()
 	CommitTransaction()
@@ -28,68 +28,68 @@ type SysClientService interface {
 	EndService()
 }
 
-type sysClientBaseService struct {
+type appClientBaseService struct {
 	db_utils.DatabaseService
-	daoAppClient platform_repository.AppClientDao
-	child        SysClientService
+	daoAppClient platform_repository.ClientsDao
+	child        ClientsService
 }
 
 func init() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags | log.Lmicroseconds)
 }
 
-func NewSysClientService(props utils.Map) (SysClientService, error) {
-	p := sysClientBaseService{}
+func NewClientsService(props utils.Map) (ClientsService, error) {
+	p := appClientBaseService{}
 
 	err := p.OpenDatabaseService(props)
 	if err != nil {
 		return nil, err
 	}
 
-	log.Printf("appClientService ")
-	p.daoAppClient = platform_repository.NewSysClientDao(p.GetClient())
+	log.Printf("NewClientsService ")
+	p.daoAppClient = platform_repository.NewClientsDao(p.GetClient())
 	p.child = &p
 	return &p, nil
 }
 
-func (p *sysClientBaseService) EndService() {
+func (p *appClientBaseService) EndService() {
 	p.CloseDatabaseService()
 }
 
 // List - List All records
-func (p *sysClientBaseService) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (p *appClientBaseService) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 
-	log.Println("SysClientService::FindAll - Begin")
+	log.Println("ClientsService::FindAll - Begin")
 
 	dataresponse, err := p.daoAppClient.List(filter, sort, skip, limit)
 	if err != nil {
 		return nil, err
 	}
-	log.Println("SysClientService::FindAll - End ")
+	log.Println("ClientsService::FindAll - End ")
 	return dataresponse, nil
 }
 
 // GetDetails - Find By Code
-func (p *sysClientBaseService) Get(clientid string) (utils.Map, error) {
-	log.Printf("SysClientService::GetDetails::  Begin %v", clientid)
+func (p *appClientBaseService) Get(clientid string) (utils.Map, error) {
+	log.Printf("ClientsService::GetDetails::  Begin %v", clientid)
 
 	data, err := p.daoAppClient.Get(clientid)
 
-	log.Println("SysClientService::GetDetails:: End ", data, err)
+	log.Println("ClientsService::GetDetails:: End ", data, err)
 	return data, err
 }
 
-func (p *sysClientBaseService) Find(filter string) (utils.Map, error) {
-	fmt.Println("SysClientService::GetDetails::  Begin ", filter)
+func (p *appClientBaseService) Find(filter string) (utils.Map, error) {
+	fmt.Println("ClientsService::GetDetails::  Begin ", filter)
 
 	data, err := p.daoAppClient.Find(filter)
 
-	log.Println("SysClientService::GetDetails:: End ", data, err)
+	log.Println("ClientsService::GetDetails:: End ", data, err)
 	return data, err
 }
 
 // Create - Create Service
-func (p *sysClientBaseService) Create(indata utils.Map) (string, error) {
+func (p *appClientBaseService) Create(indata utils.Map) (string, error) {
 
 	log.Println("ClientService::Create - Begin")
 
@@ -124,6 +124,7 @@ func (p *sysClientBaseService) Create(indata utils.Map) (string, error) {
 
 	// Update converted clientId back to indata
 	indata[platform_common.FLD_CLIENT_ID] = clientId
+	indata[db_common.FLD_IS_SUSPENDED] = false
 
 	createdId, err := p.daoAppClient.Create(indata)
 	if err != nil {
@@ -134,7 +135,7 @@ func (p *sysClientBaseService) Create(indata utils.Map) (string, error) {
 }
 
 // Update - Update Service
-func (p *sysClientBaseService) Update(clientid string, indata utils.Map) (utils.Map, error) {
+func (p *appClientBaseService) Update(clientid string, indata utils.Map) (utils.Map, error) {
 
 	log.Println("ClientService::Update - Begin")
 
@@ -148,7 +149,7 @@ func (p *sysClientBaseService) Update(clientid string, indata utils.Map) (utils.
 }
 
 // Delete - Delete Service
-func (p *sysClientBaseService) Delete(clientid string) error {
+func (p *appClientBaseService) Delete(clientid string) error {
 
 	log.Println("ClientService::Delete - Begin", clientid)
 
@@ -162,23 +163,21 @@ func (p *sysClientBaseService) Delete(clientid string) error {
 }
 
 // GetDetails - Find By Code
-func (p *sysClientBaseService) Authenticate(clientid string, clientsecret string) (utils.Map, error) {
-	log.Println("Authenticate::  Begin ", clientid, clientsecret)
+func (p *appClientBaseService) Authenticate(clientId string, clientSecret string, clientType string, clientScope string) (utils.Map, error) {
+	log.Println("Authenticate::  Begin ", clientId, clientSecret, clientType, clientScope)
 
-	log.Println("User Password from API", clientsecret)
-	dataUser, err := p.daoAppClient.Authenticate(clientid, clientsecret)
-
-	log.Println("Length of dataUser :", dataUser)
-
+	log.Println("User Password from API", clientSecret)
+	dataClients, err := p.daoAppClient.Authenticate(clientId, clientSecret, clientType, clientScope)
 	if err != nil {
 		err := &utils.AppError{ErrorCode: "S30340101", ErrorMsg: "Wrong Credentials", ErrorDetail: "Authenticate credentials is wrong !!"}
 		return utils.Map{}, err
 	}
 
-	dataval, dataok := dataUser[db_common.FLD_IS_DELETED]
-	if dataok && !dataval.(bool) {
-		err := &utils.AppError{ErrorCode: "S30340102", ErrorMsg: "User not in Active Mode. Contact Admin!", ErrorDetail: "User not in Active Mode. Contact Admin!"}
+	dataval, dataok := dataClients[db_common.FLD_IS_SUSPENDED]
+	if dataok && dataval.(bool) {
+		err := &utils.AppError{ErrorCode: "S30340102", ErrorMsg: "Client key is in Suspended Mode. Contact Admin!", ErrorDetail: "Client key is in Suspended Mode. Contact Admin!"}
 		return utils.Map{}, err
 	}
-	return dataUser, nil
+
+	return dataClients, nil
 }

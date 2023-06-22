@@ -12,8 +12,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// AppClientMongoDBDao - User DAO Repository
-type AppClientMongoDBDao struct {
+// ClientsMongoDBDao - User DAO Repository
+type ClientsMongoDBDao struct {
 	client utils.Map
 }
 
@@ -21,18 +21,18 @@ func init() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags | log.Lmicroseconds)
 }
 
-func (p *AppClientMongoDBDao) InitializeDao(client utils.Map) {
-	log.Println("Initialize AppClientMongoDBDao")
+func (p *ClientsMongoDBDao) InitializeDao(client utils.Map) {
+	log.Println("Initialize ClientsMongoDBDao")
 	p.client = client
 }
 
 // List - List all Collections
-func (t AppClientMongoDBDao) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (t ClientsMongoDBDao) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 	var results []utils.Map
 
-	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformAppClients)
+	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformClients)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformClients)
 	if err != nil {
 		return nil, err
 	}
@@ -117,13 +117,13 @@ func (t AppClientMongoDBDao) List(filter string, sort string, skip int64, limit 
 	return response, nil
 }
 
-func (t AppClientMongoDBDao) Get(userid string) (utils.Map, error) {
+func (t ClientsMongoDBDao) Get(userid string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
-	log.Println("AppClientMongoDBDao::Find:: Begin ", userid)
+	log.Println("ClientsMongoDBDao::Find:: Begin ", userid)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformClients)
 	log.Println("Find:: Got Collection ")
 
 	filter := bson.D{
@@ -145,15 +145,15 @@ func (t AppClientMongoDBDao) Get(userid string) (utils.Map, error) {
 	// Remove fields from result
 	result = db_common.AmendFldsForGet(result)
 
-	log.Printf("AppClientMongoDBDao::Find:: End Found a single document: %+v\n", result)
+	log.Printf("ClientsMongoDBDao::Find:: End Found a single document: %+v\n", result)
 	return result, nil
 }
 
 // Update - Update Collection
-func (t AppClientMongoDBDao) Update(userid string, indata utils.Map) (utils.Map, error) {
+func (t ClientsMongoDBDao) Update(userid string, indata utils.Map) (utils.Map, error) {
 
 	log.Println("Update - Begin")
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformClients)
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -176,18 +176,20 @@ func (t AppClientMongoDBDao) Update(userid string, indata utils.Map) (utils.Map,
 }
 
 // Find - Find by code
-func (t AppClientMongoDBDao) Authenticate(clientId string, clientSecret string) (utils.Map, error) {
+func (t ClientsMongoDBDao) Authenticate(clientId string, clientSecret string, clientType string, clientScope string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
-	log.Println("AppClientMongoDBDao::Find:: Begin ", clientId)
+	log.Println("ClientsMongoDBDao::Find:: Begin ", clientId)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformClients)
 	log.Println("Find:: Got Collection ")
 
 	filter := bson.D{
 		{Key: platform_common.FLD_CLIENT_ID, Value: clientId},
 		{Key: platform_common.FLD_CLIENT_SECRET, Value: clientSecret},
+		{Key: platform_common.FLD_CLIENT_TYPE, Value: clientType},
+		{Key: platform_common.FLD_CLIENT_SCOPE, Value: clientScope},
 		{Key: db_common.FLD_IS_DELETED, Value: false}}
 
 	log.Println("Find:: Got filter ", filter)
@@ -207,15 +209,15 @@ func (t AppClientMongoDBDao) Authenticate(clientId string, clientSecret string) 
 	// Remove fields from result
 	result = db_common.AmendFldsForGet(result)
 
-	log.Printf("AppClientMongoDBDao::Find:: End Found a single document: %+v\n", result)
+	log.Printf("ClientsMongoDBDao::Find:: End Found a single document: %+v\n", result)
 	return result, nil
 }
 
 // Insert - Insert Collection
-func (t AppClientMongoDBDao) Create(indata utils.Map) (string, error) {
+func (t ClientsMongoDBDao) Create(indata utils.Map) (string, error) {
 
 	log.Println("User Save - Begin", indata)
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformClients)
 	if err != nil {
 		return "", err
 	}
@@ -236,13 +238,13 @@ func (t AppClientMongoDBDao) Create(indata utils.Map) (string, error) {
 }
 
 // Find - Find by code
-func (t AppClientMongoDBDao) Find(filter string) (utils.Map, error) {
+func (t ClientsMongoDBDao) Find(filter string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
-	log.Println("AppClient::Find:: Begin ", filter)
+	log.Println("ClientsMongoDBDao::Find:: Begin ", filter)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformClients)
 	log.Println("Find:: Got Collection ", err)
 
 	bfilter := bson.D{}
@@ -269,16 +271,16 @@ func (t AppClientMongoDBDao) Find(filter string) (utils.Map, error) {
 	// Remove fields from result
 	result = db_common.AmendFldsForGet(result)
 
-	log.Printf("AppClient::Find:: End Found a single document: %+v\n", result)
+	log.Printf("ClientsMongoDBDao::Find:: End Found a single document: %+v\n", result)
 	return result, nil
 }
 
 // Delete - Delete Collection
-func (t AppClientMongoDBDao) Delete(userid string) (int64, error) {
+func (t ClientsMongoDBDao) Delete(userid string) (int64, error) {
 
-	log.Println("AppClientMongoDBDao::Delete - Begin ", userid)
+	log.Println("ClientsMongoDBDao::Delete - Begin ", userid)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppClients)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformClients)
 	if err != nil {
 		return 0, err
 	}
@@ -297,6 +299,6 @@ func (t AppClientMongoDBDao) Delete(userid string) (int64, error) {
 		log.Println("Error in delete ", err)
 		return 0, err
 	}
-	log.Printf("AppClientMongoDBDao::Delete - End deleted %v documents\n", res.DeletedCount)
+	log.Printf("ClientsMongoDBDao::Delete - End deleted %v documents\n", res.DeletedCount)
 	return res.DeletedCount, nil
 }

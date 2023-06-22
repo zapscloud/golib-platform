@@ -24,12 +24,12 @@ func GetZapsDBCreds() utils.Map {
 }
 
 func ZapsDBMain() (platform_services.AppUserService, platform_services.BusinessService, platform_services.RegionService,
-	platform_services.AppClientService, platform_services.SysSettingService) {
+	platform_services.ClientsService, platform_services.SysSettingService) {
 
 	usersrv, _ := platform_services.NewAppUserService(GetZapsDBCreds())
 	bizsrv, _ := platform_services.NewBusinessService(GetZapsDBCreds())
 	regionsrv, _ := platform_services.NewRegionService(GetZapsDBCreds())
-	clientsrv, _ := platform_services.NewAppClientService(GetZapsDBCreds())
+	clientsrv, _ := platform_services.NewClientsService(GetZapsDBCreds())
 	settingsrv, _ := platform_services.NewSysSettingService(GetZapsDBCreds())
 
 	return usersrv, bizsrv, regionsrv, clientsrv, settingsrv

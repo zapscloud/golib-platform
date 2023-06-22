@@ -75,7 +75,7 @@ func EmptySysBusiness(srv platform_services.BusinessService) {
 	fmt.Println("App Business Service ")
 }
 
-func EmptySysClient(srv platform_services.AppClientService) {
+func EmptySysClient(srv platform_services.ClientsService) {
 	fmt.Println("App Client Service ")
 }
 
@@ -295,7 +295,7 @@ func GetAppRegion(srv platform_services.RegionService) {
 
 }
 
-func CreateSysClient(srv platform_services.AppClientService) {
+func CreateSysClient(srv platform_services.ClientsService) {
 
 	indata := utils.Map{
 		platform_common.FLD_CLIENT_ID:     "client001",
@@ -310,7 +310,7 @@ func CreateSysClient(srv platform_services.AppClientService) {
 
 }
 
-func ListSysClients(srv platform_services.AppClientService) {
+func ListSysClients(srv platform_services.ClientsService) {
 
 	filter := "" //fmt.Sprintf(`{"%s":"%s"}`, platform_common.FLD_CLIENT_ID, "client001")
 	res, err := srv.List(filter, "", 0, 0)
@@ -319,7 +319,7 @@ func ListSysClients(srv platform_services.AppClientService) {
 	pretty.Print(res)
 }
 
-func FindSysClient(srv platform_services.AppClientService) {
+func FindSysClient(srv platform_services.ClientsService) {
 
 	filter := fmt.Sprintf(`{platform_common.FLD_CLIENT_ID:"%s",platform_common.FLD_CLIENT_SECRET:"%s" }`, "client001", "secret001")
 	res, err := srv.Find(filter)
@@ -328,14 +328,14 @@ func FindSysClient(srv platform_services.AppClientService) {
 
 }
 
-func GetSysClient(srv platform_services.AppClientService) {
+func GetSysClient(srv platform_services.ClientsService) {
 	res, err := srv.Get("client001")
 	fmt.Println("Get AppUser", err)
 	pretty.Println(res)
 
 }
 
-func UpdateSysClient(srv platform_services.AppClientService) {
+func UpdateSysClient(srv platform_services.ClientsService) {
 
 	sys_client_id := "client001"
 
@@ -349,7 +349,7 @@ func UpdateSysClient(srv platform_services.AppClientService) {
 	pretty.Println(res)
 }
 
-func DeleteSysClient(srv platform_services.AppClientService) {
+func DeleteSysClient(srv platform_services.ClientsService) {
 
 	sys_client_id := "client001"
 	err := srv.Delete(sys_client_id)

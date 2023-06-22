@@ -6,15 +6,15 @@ import (
 	"github.com/zapscloud/golib-utils/utils"
 )
 
-// SysClientDao - User DAO Repository
-type SysClientDao interface {
+// ClientsDao - User DAO Repository
+type ClientsDao interface {
 	InitializeDao(client utils.Map)
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
 	// Count(filter string, sort string, skip int64, limit int64) (int64, int64, error)
 	// Update - Update Collection
 	Update(clientid string, indata utils.Map) (utils.Map, error)
 	// Find - Find by code
-	Authenticate(clientid string, clientsecret string) (utils.Map, error)
+	Authenticate(clientid string, clientsecret string, clientType string, clientScope string) (utils.Map, error)
 	// Insert - Insert Collection
 	Create(indata utils.Map) (string, error)
 	// Find - Find by code
@@ -27,13 +27,13 @@ type SysClientDao interface {
 }
 
 // type appClientBaseDao struct {
-// 	app_db_repository.SysClientDBDao
+// 	app_db_repository.AppClientDBDao
 // 	instancename string
 // }
 
-// NewSysClientDao - Contruct User Dao
-func NewSysClientDao(client utils.Map) SysClientDao {
-	var daoSysClient SysClientDao = nil
+// NewClientsDao - Contruct User Dao
+func NewClientsDao(client utils.Map) ClientsDao {
+	var daoAppClient ClientsDao = nil
 
 	// Get DatabaseType and no need to validate error
 	// since the dbType was assigned with correct value after dbService was created
@@ -41,19 +41,19 @@ func NewSysClientDao(client utils.Map) SysClientDao {
 
 	switch dbType {
 	case db_common.DATABASE_TYPE_MONGODB:
-		daoSysClient = &mongodb_repository.SysClientMongoDBDao{}
+		daoAppClient = &mongodb_repository.ClientsMongoDBDao{}
 	case db_common.DATABASE_TYPE_ZAPSDB:
 		// *Not Implemented yet*
-		daoSysClient = nil
+		daoAppClient = nil
 	case db_common.DATABASE_TYPE_MYSQLDB:
 		// *Not Implemented yet*
-		daoSysClient = nil
+		daoAppClient = nil
 	}
 
-	if daoSysClient != nil {
+	if daoAppClient != nil {
 		// Initialize the Dao
-		daoSysClient.InitializeDao(client)
+		daoAppClient.InitializeDao(client)
 	}
 
-	return daoSysClient
+	return daoAppClient
 }

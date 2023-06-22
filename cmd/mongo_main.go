@@ -29,13 +29,13 @@ func MongoDBMain() (
 	platform_services.AppUserService,
 	platform_services.BusinessService,
 	platform_services.RegionService,
-	platform_services.AppClientService,
+	platform_services.ClientsService,
 	platform_services.SysSettingService) {
 
 	usersrv, _ := platform_services.NewAppUserService(GetMongoDBCreds())
 	bizsrv, _ := platform_services.NewBusinessService(GetMongoDBCreds())
 	regionsrv, _ := platform_services.NewRegionService(GetMongoDBCreds())
-	clientsrv, _ := platform_services.NewAppClientService(GetMongoDBCreds())
+	clientsrv, _ := platform_services.NewClientsService(GetMongoDBCreds())
 	settingsrv, _ := platform_services.NewSysSettingService(GetMongoDBCreds())
 
 	return usersrv, bizsrv, regionsrv, clientsrv, settingsrv

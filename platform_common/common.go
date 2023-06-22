@@ -17,15 +17,14 @@ const (
 	DbPrefix = db_common.DB_COLLECTION_PREFIX
 	// Platform Tables
 	DbPlatformSettings = DbPrefix + "platform_settings"
+	DbPlatformClients  = DbPrefix + "platform_clients"
 
-	DbPlatformSysClients    = DbPrefix + "platform_sysclients"
 	DbPlatformSysUsers      = DbPrefix + "platform_sysusers"
 	DbPlatformSysRoles      = DbPrefix + "platform_sysroles"
 	DbPlatformSysRoleCreds  = DbPrefix + "platform_sysrole_creds"
 	DbPlatformSysRoleUsers  = DbPrefix + "platform_sysrole_users"
 	DbPlatformSysUserAccess = DbPrefix + "platform_sysuser_business_access"
 
-	DbPlatformAppClients   = DbPrefix + "platform_appclients"
 	DbPlatformAppUsers     = DbPrefix + "platform_appusers"
 	DbPlatformAppRoles     = DbPrefix + "platform_approles"
 	DbPlatformAppRoleUsers = DbPrefix + "platform_approle_users"

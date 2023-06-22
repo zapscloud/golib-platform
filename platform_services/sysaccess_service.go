@@ -51,7 +51,7 @@ func NewSysAccessService(props utils.Map) (SysAccessService, error) {
 	}
 
 	// Verify whether the business id data passed
-	businessId, err := utils.IsMemberExist(props, platform_common.FLD_BUSINESS_ID)
+	businessId, err := utils.GetMemberDataStr(props, platform_common.FLD_BUSINESS_ID)
 	if err != nil {
 		return nil, err
 	}

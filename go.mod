@@ -6,7 +6,7 @@ require (
 	github.com/kr/pretty v0.3.1
 	github.com/rs/xid v1.4.0
 	github.com/zapscloud/golib-dbutils v1.0.1-0.20230407053329-3e3140b8e4a9
-	github.com/zapscloud/golib-utils v1.0.1-0.20230512064156-e87330e5ed26
+	github.com/zapscloud/golib-utils v1.0.1-0.20230622110613-b4f6b17a0f53
 	go.mongodb.org/mongo-driver v1.11.7
 )
 

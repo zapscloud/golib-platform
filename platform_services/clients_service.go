@@ -19,7 +19,7 @@ type ClientsService interface {
 	Create(indata utils.Map) (string, error)
 	Update(clientid string, indata utils.Map) (utils.Map, error)
 	Delete(clientid string) error
-	Authenticate(clientId string, clientSecret string, clientType string, clientScope string) (utils.Map, error)
+	Authenticate(clientId string, clientSecret string) (utils.Map, error)
 
 	BeginTransaction()
 	CommitTransaction()
@@ -163,11 +163,11 @@ func (p *appClientBaseService) Delete(clientid string) error {
 }
 
 // GetDetails - Find By Code
-func (p *appClientBaseService) Authenticate(clientId string, clientSecret string, clientType string, clientScope string) (utils.Map, error) {
-	log.Println("Authenticate::  Begin ", clientId, clientSecret, clientType, clientScope)
+func (p *appClientBaseService) Authenticate(clientId string, clientSecret string) (utils.Map, error) {
+	log.Println("Authenticate::  Begin ", clientId, clientSecret)
 
 	log.Println("User Password from API", clientSecret)
-	dataClients, err := p.daoAppClient.Authenticate(clientId, clientSecret, clientType, clientScope)
+	dataClients, err := p.daoAppClient.Authenticate(clientId, clientSecret)
 	if err != nil {
 		err := &utils.AppError{ErrorCode: "S30340101", ErrorMsg: "Wrong Credentials", ErrorDetail: "Authenticate credentials is wrong !!"}
 		return utils.Map{}, err

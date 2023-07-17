@@ -14,7 +14,7 @@ type ClientsDao interface {
 	// Update - Update Collection
 	Update(clientid string, indata utils.Map) (utils.Map, error)
 	// Find - Find by code
-	Authenticate(clientid string, clientsecret string, clientType string, clientScope string) (utils.Map, error)
+	Authenticate(clientId string, clientSecret string) (utils.Map, error)
 	// Insert - Insert Collection
 	Create(indata utils.Map) (string, error)
 	// Find - Find by code

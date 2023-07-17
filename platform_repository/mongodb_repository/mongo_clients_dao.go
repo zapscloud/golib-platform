@@ -176,7 +176,7 @@ func (t ClientsMongoDBDao) Update(userid string, indata utils.Map) (utils.Map, e
 }
 
 // Find - Find by code
-func (t ClientsMongoDBDao) Authenticate(clientId string, clientSecret string, clientType string, clientScope string) (utils.Map, error) {
+func (t ClientsMongoDBDao) Authenticate(clientId string, clientSecret string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
@@ -188,8 +188,6 @@ func (t ClientsMongoDBDao) Authenticate(clientId string, clientSecret string, cl
 	filter := bson.D{
 		{Key: platform_common.FLD_CLIENT_ID, Value: clientId},
 		{Key: platform_common.FLD_CLIENT_SECRET, Value: clientSecret},
-		{Key: platform_common.FLD_CLIENT_TYPE, Value: clientType},
-		{Key: platform_common.FLD_CLIENT_SCOPE, Value: clientScope},
 		{Key: db_common.FLD_IS_DELETED, Value: false}}
 
 	log.Println("Find:: Got filter ", filter)

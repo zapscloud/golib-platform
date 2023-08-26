@@ -65,13 +65,14 @@ const (
 	FLD_SYS_USER_PHONE     = "phone"
 
 	// App User
-	FLD_APP_USER_ID       = "user_id"
-	FLD_APP_USER_PASSWORD = "password"
-	FLD_APP_USER_EMAILID  = "email_id"
-	FLD_APP_USER_PHONE    = "phone"
-	FLD_APP_USER_FNAME    = "first_name"
-	FLD_APP_USER_LNAME    = "last_name"
-	FLD_APP_USER_OTP      = "password_otp"
+	FLD_APP_USER_ID             = "user_id"
+	FLD_APP_USER_PASSWORD       = "password"
+	FLD_APP_USER_EMAILID        = "email_id"
+	FLD_APP_USER_PHONE          = "phone"
+	FLD_APP_USER_FNAME          = "first_name"
+	FLD_APP_USER_LNAME          = "last_name"
+	FLD_APP_USER_PASSWORD_OTP   = "password_otp"
+	FLD_APP_USER_PASSWORD_TOKEN = "password_token"
 
 	// App Region table fields
 	FLD_REGION_ID             = "region_id"

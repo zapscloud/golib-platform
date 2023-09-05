@@ -182,17 +182,17 @@ func (p *sysUserBaseService) Authenticate(auth_key string, auth_login string, au
 		return utils.Map{}, err
 	}
 
-	dataval, dataok := dataUser[db_common.FLD_IS_DELETED]
-	if dataok && !dataval.(bool) {
-		err := &utils.AppError{ErrorCode: "S30340102", ErrorMsg: "User not in Active Mode. Contact Admin!", ErrorDetail: "User not in Active Mode. Contact Admin!"}
+	isSuspended, err := utils.GetMemberDataBool(dataUser, db_common.FLD_IS_SUSPENDED)
+	if err == nil && isSuspended {
+		err := &utils.AppError{ErrorCode: "S30340102", ErrorMsg: "User is in suspended mode. Contact Admin!", ErrorDetail: "User not in Active Mode. Contact Admin!"}
 		return utils.Map{}, err
 	}
 
-	dataval, dataok = dataUser["is_verified"]
-	if dataok && !dataval.(bool) {
-		err := &utils.AppError{ErrorCode: "S30340103", ErrorMsg: "User not yet verified!", ErrorDetail: "User not yet verified!!"}
-		return utils.Map{}, err
-	}
+	// isVerified, err := utils.GetMemberDataBool(dataUser, db_common.FLD_IS_VERIFIED)
+	// if err == nil && !isVerified {
+	// 	err := &utils.AppError{ErrorCode: "S30340103", ErrorMsg: "User not yet verified!", ErrorDetail: "User not yet verified!!"}
+	// 	return utils.Map{}, err
+	// }
 
 	return dataUser, nil
 }

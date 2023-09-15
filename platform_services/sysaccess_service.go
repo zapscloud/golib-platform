@@ -53,6 +53,7 @@ func NewSysAccessService(props utils.Map) (SysAccessService, error) {
 	// Verify whether the business id data passed
 	businessId, err := utils.GetMemberDataStr(props, platform_common.FLD_BUSINESS_ID)
 	if err != nil {
+		p.CloseDatabaseService()
 		return nil, err
 	}
 

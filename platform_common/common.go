@@ -121,10 +121,10 @@ const (
 )
 
 const (
-	DEF_APP_ROLE_ADMIN_NAME = "admin"
+	DEF_APP_ROLE_ADMIN_NAME = "Admin"
 	DEF_APP_ROLE_ADMIN_DESC = "Administrator"
 
-	DEF_APP_ROLE_USER_NAME = "user"
+	DEF_APP_ROLE_USER_NAME = "User"
 	DEF_APP_ROLE_USER_DESC = "Normal User"
 )
 

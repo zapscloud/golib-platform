@@ -69,6 +69,7 @@ const (
 	FLD_APP_USER_PASSWORD       = "password"
 	FLD_APP_USER_EMAILID        = "email_id"
 	FLD_APP_USER_PHONE          = "phone"
+	FLD_APP_USER_UNIQUE_ID      = "unique_id"
 	FLD_APP_USER_FNAME          = "first_name"
 	FLD_APP_USER_LNAME          = "last_name"
 	FLD_APP_USER_PASSWORD_OTP   = "password_otp"

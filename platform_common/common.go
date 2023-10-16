@@ -40,11 +40,21 @@ const (
 	DbDepartments = DbPrefix + "platform_departments"
 )
 
+// Default values
+const (
+	DEF_REGION_ID   = "global"
+	DEF_REGION_NAME = "Global database for all business"
+
+	DEF_SETTING_IS_BIZ_TENANT_DB = false
+	DEF_TIME_ZONE                = "Asia/Calcutta" // GMT+5:30 hrs
+)
+
 const (
 	//
 	// Sys Settings table fields
-	FLD_SETTING_ID    = "setting_id"
-	FLD_SETTING_VALUE = "setting_value"
+	FLD_SETTING_ID               = "setting_id"
+	FLD_SETTING_VALUE            = "setting_value"
+	FLD_SETTING_IS_BIZ_TENANT_DB = "is_biz_tenant_db"
 
 	// Sys Access table fields
 	FLD_SYS_ACCESS_ID            = "access_id"
@@ -92,7 +102,7 @@ const (
 	FLD_BUSINESS_NAME          = "business_name"
 	FLD_BUSINESS_EMAILID       = "business_email_id"
 	FLD_BUSINESS_REGION_ID     = "region_id"
-	FLD_BUSINESS_IS_TENANT_DB  = "tenant_db"
+	FLD_BUSINESS_IS_TENANT_DB  = "is_tenant_db"
 	FLD_BUSINESS_APPROVAL_CODE = "approval_code"
 
 	// App Business User table fields

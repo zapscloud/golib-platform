@@ -98,7 +98,7 @@ func (p *regionBaseService) Create(indata utils.Map) (utils.Map, error) {
 	// Conver the RegionId to Lowercase
 	regionId := strings.ToLower(indata[platform_common.FLD_REGION_ID].(string))
 
-	err := p.validateCreate(indata)
+	indata, err := p.validateCreate(indata)
 	if err != nil {
 		return nil, err
 	}
@@ -180,17 +180,17 @@ func (p *regionBaseService) validateKeyExist(key string) (utils.Map, error) {
 }
 
 // Private functions
-func (p *regionBaseService) validateCreate(dataSysRegion utils.Map) error {
+func (p *regionBaseService) validateCreate(dataRegion utils.Map) (utils.Map, error) {
 
 	var err error = nil
 
-	if _, dataok := dataSysRegion[platform_common.FLD_REGION_ID]; !dataok {
+	if _, err := utils.GetMemberDataStr(dataRegion, platform_common.FLD_REGION_ID); err != nil {
 		err = &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Missing Region ID!", ErrorDetail: "Region ID parameter is missing"}
-	} else if _, dataok := dataSysRegion[platform_common.FLD_REGION_NAME]; !dataok {
+	} else if _, err := utils.GetMemberDataStr(dataRegion, platform_common.FLD_REGION_NAME); err != nil {
 		err = &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Missing value", ErrorDetail: "Parameter " + platform_common.FLD_REGION_NAME + " is missing"}
-	} else if _, dataok := dataSysRegion[platform_common.FLD_REGION_DB_TYPE]; !dataok {
+	} else if _, err := utils.GetMemberDataStr(dataRegion, platform_common.FLD_REGION_DB_TYPE); err != nil {
 		err = &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Missing value", ErrorDetail: "Parameter " + platform_common.FLD_REGION_DB_TYPE + " is missing"}
 	}
 
-	return err
+	return dataRegion, err
 }

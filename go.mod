@@ -5,8 +5,8 @@ go 1.20
 require (
 	github.com/kr/pretty v0.3.1
 	github.com/rs/xid v1.4.0
-	github.com/zapscloud/golib-dbutils v1.1.1-0.20231006124328-1a3949fdf394
-	github.com/zapscloud/golib-utils v1.0.1-0.20230830110037-ce8b7333310f
+	github.com/zapscloud/golib-dbutils v1.1.1-0.20231016071702-b6e244391427
+	github.com/zapscloud/golib-utils v1.0.1-0.20231013125100-bb65f5737443
 	go.mongodb.org/mongo-driver v1.11.7
 )
 

@@ -16,13 +16,17 @@ func main() {
 	usersrv, bizsrv, regionsrv, clientsrv, settingsrv := MongoDBMain()
 	// usersrv, bizsrv, regionsrv, clientsrv, settingsrv := ZapsDBMain()
 
+	if usersrv == nil {
+		return
+	}
+
 	EmptyAppUser(usersrv)
 	// UpdateAppUser(srv)
 	// changePassword(srv)
 	// AuthAppUser(srv)
-	// CreateAppUser(usersrv)
-	ListAppUsers(usersrv)
-	// GetAppUser(usersrv)
+	CreateAppUser(usersrv)
+	//ListAppUsers(usersrv)
+	//GetAppUser(usersrv)
 	// FindAppUser(srv)
 	// ListAppUserBusinesses(usersrv)
 
@@ -86,10 +90,10 @@ func EmptySysSetting(srv platform_services.SysSettingService) {
 func CreateAppUser(srv platform_services.AppUserService) {
 
 	indata := utils.Map{
-		platform_common.FLD_SYS_USER_ID:        "user003",
-		platform_common.FLD_SYS_USER_PASSWORD:  "secret003",
-		platform_common.FLD_SYS_USER_EMAILID:   "user003@zaps.com",
-		platform_common.FLD_SYS_USER_FIRSTNAME: "Demo user 003",
+		platform_common.FLD_APP_USER_ID:       "user003",
+		platform_common.FLD_APP_USER_PASSWORD: "secret003",
+		platform_common.FLD_APP_USER_EMAILID:  "user003@zaps.com",
+		platform_common.FLD_APP_USER_FNAME:    "Demo user 003",
 	}
 
 	res, err := srv.Create(indata)
@@ -163,7 +167,7 @@ func CreateSysBusiness(srv platform_services.BusinessService) {
 	indata := utils.Map{
 		platform_common.FLD_BUSINESS_ID:        "business004",
 		platform_common.FLD_BUSINESS_NAME:      "Business 004",
-		platform_common.FLD_BUSINESS_REGION_ID: db_common.DEF_REGION_ID,
+		platform_common.FLD_BUSINESS_REGION_ID: platform_common.DEF_REGION_ID,
 	}
 
 	res, err := srv.Create(indata)
@@ -183,7 +187,7 @@ func UpdateSysBusiness(srv platform_services.BusinessService) {
 
 	indata := utils.Map{
 		platform_common.FLD_BUSINESS_NAME:      "Business 002 Region Update",
-		platform_common.FLD_BUSINESS_REGION_ID: db_common.DEF_REGION_ID,
+		platform_common.FLD_BUSINESS_REGION_ID: platform_common.DEF_REGION_ID,
 		db_common.FLD_IS_DELETED:               false,
 	}
 
@@ -245,8 +249,8 @@ func ListAppRegions(srv platform_services.RegionService) {
 func CreateAppRegion(srv platform_services.RegionService) {
 
 	indata := utils.Map{
-		platform_common.FLD_REGION_ID:   db_common.DEF_REGION_ID,
-		platform_common.FLD_REGION_NAME: db_common.DEF_REGION_NAME,
+		platform_common.FLD_REGION_ID:   platform_common.DEF_REGION_ID,
+		platform_common.FLD_REGION_NAME: platform_common.DEF_REGION_NAME,
 	}
 
 	res, err := srv.Create(indata)
@@ -258,14 +262,14 @@ func CreateAppRegion(srv platform_services.RegionService) {
 func UpdateAppZapsRegion(srv platform_services.RegionService) {
 
 	indata := utils.Map{
-		platform_common.FLD_REGION_ID:            db_common.DEF_REGION_ID,
+		platform_common.FLD_REGION_ID:            platform_common.DEF_REGION_ID,
 		platform_common.FLD_REGION_DB_TYPE:       db_common.DATABASE_TYPE_ZAPSDB,
 		platform_common.FLD_REGION_ZAPSDB_APP:    "medishopdevapp",
 		platform_common.FLD_REGION_ZAPSDB_KEY:    "medishopdevapp",
 		platform_common.FLD_REGION_ZAPSDB_SECRET: "9a5659539f72f22db824f4a6b6a3ba7cf997f6a373f242e16d514b0e0d2f3bf26dae16a933a159b52bcc062fb8b4a6a13177e4f44fe2d1066fc84c946b63f4be",
 	}
 
-	res, err := srv.Update(db_common.DEF_REGION_ID, indata)
+	res, err := srv.Update(platform_common.DEF_REGION_ID, indata)
 	fmt.Println("Update UpdateAppZapsRegion", err)
 	pretty.Println(res)
 
@@ -274,7 +278,7 @@ func UpdateAppZapsRegion(srv platform_services.RegionService) {
 func UpdateAppMongoRegion(srv platform_services.RegionService) {
 
 	indata := utils.Map{
-		platform_common.FLD_REGION_ID:             db_common.DEF_REGION_ID,
+		platform_common.FLD_REGION_ID:             platform_common.DEF_REGION_ID,
 		platform_common.FLD_REGION_DB_TYPE:        db_common.DATABASE_TYPE_MONGODB,
 		platform_common.FLD_REGION_MONGODB_SERVER: "clusterdev.v0ayj.mongodb.net",
 		platform_common.FLD_REGION_MONGODB_NAME:   "zerveedev",
@@ -282,14 +286,14 @@ func UpdateAppMongoRegion(srv platform_services.RegionService) {
 		platform_common.FLD_REGION_MONGODB_SECRET: "O1sraRW5ePs3bala",
 	}
 
-	res, err := srv.Update(db_common.DEF_REGION_ID, indata)
+	res, err := srv.Update(platform_common.DEF_REGION_ID, indata)
 	fmt.Println("Update UpdateAppZapsRegion", err)
 	pretty.Println(res)
 
 }
 
 func GetAppRegion(srv platform_services.RegionService) {
-	res, err := srv.Get(db_common.DEF_REGION_ID)
+	res, err := srv.Get(platform_common.DEF_REGION_ID)
 	fmt.Println("Get GetAppRegion", err)
 	pretty.Println(res)
 

@@ -69,13 +69,18 @@ func GetRegionAndTenantDBInfo(props utils.Map) (utils.Map, error) {
 		dbName = dbName + "-" + businessId
 	}
 
-	// Update it in props
-	props[db_common.DB_TYPE] = db_common.DatabaseType(dbType)
-	props[db_common.DB_SERVER] = dbServer
-	props[db_common.DB_USER] = dbUser
-	props[db_common.DB_SECRET] = dbSecret
-	props[db_common.DB_NAME] = dbName
+	// Create Region's Database Props
+	regionDBProps := utils.Map{
+		db_common.DB_TYPE:               db_common.DatabaseType(dbType),
+		db_common.DB_SERVER:             dbServer,
+		db_common.DB_USER:               dbUser,
+		db_common.DB_SECRET:             dbSecret,
+		db_common.DB_NAME:               dbName,
+		platform_common.FLD_BUSINESS_ID: businessId,
+	}
 
-	return props, nil
+	
+
+	return regionDBProps, nil
 
 }

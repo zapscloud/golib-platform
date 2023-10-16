@@ -46,14 +46,14 @@ func init() {
 
 func NewAppUserService(props utils.Map) (AppUserService, error) {
 	p := appUserBaseService{}
+	log.Printf("NewAppUserService :: Start")
 
 	err := p.OpenDatabaseService(props)
 	if err != nil {
-		log.Println("NewAppUserMongoService ", err)
+		log.Println("NewAppUserService ", err)
 		return nil, err
 	}
 
-	log.Printf("appUserMongoService ")
 	p.daoAppUser = platform_repository.NewAppUserDao(p.GetClient())
 	p.daoBusiness = platform_repository.NewBusinessDao(p.GetClient())
 	p.child = &p

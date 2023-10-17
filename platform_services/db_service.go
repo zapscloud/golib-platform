@@ -10,7 +10,18 @@ import (
 	"github.com/zapscloud/golib-utils/utils"
 )
 
-func GetRegionAndTenantDBInfo(props utils.Map) (utils.Map, error) {
+func OpenRegionDatabaseService(props utils.Map) (db_utils.DatabaseService, error) {
+	var dbRegion db_utils.DatabaseService
+
+	// Get Region and Tenant Database Information
+	propsRegion, err := getRegionAndTenantDBInfo(props)
+	if err == nil {
+		err = dbRegion.OpenDatabaseService(propsRegion)
+	}
+	return dbRegion, err
+}
+
+func getRegionAndTenantDBInfo(props utils.Map) (utils.Map, error) {
 	var dbServices db_utils.DatabaseService
 	var daoPlatformBusiness platform_repository.BusinessDao
 	funcode := platform_common.GetServiceModuleCode() + "M" + "01"
@@ -78,8 +89,6 @@ func GetRegionAndTenantDBInfo(props utils.Map) (utils.Map, error) {
 		db_common.DB_NAME:               dbName,
 		platform_common.FLD_BUSINESS_ID: businessId,
 	}
-
-	
 
 	return regionDBProps, nil
 

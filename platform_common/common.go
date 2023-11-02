@@ -47,6 +47,14 @@ const (
 
 	DEF_SETTING_IS_BIZ_TENANT_DB = false
 	DEF_TIME_ZONE                = "Asia/Calcutta" // GMT+5:30 hrs
+
+)
+
+// Dynamic Fields
+const (
+	FLD_APP_USER_INFO = "app_user_info"
+
+	FLD_FILTERED_COUNT = "filtered_count"
 )
 
 const (
